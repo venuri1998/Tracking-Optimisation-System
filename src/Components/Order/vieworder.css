@@ -1,0 +1,6 @@
+.ReactTable.-striped.-highlight.-order {
+    width: 750px;
+    border-bottom-width: thick;
+    border-color: lightgrey;
+    min-width: 400px;
+}

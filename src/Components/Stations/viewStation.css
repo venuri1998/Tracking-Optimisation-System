@@ -1,0 +1,10 @@
+.ReactTable.-striped.-highlight {
+    width: 1000px;
+    border-bottom-width: thick;
+    border-color: lightgrey;
+    min-width: 400px;
+}
+
+.inProgress{
+    background-color: yellow;
+}
