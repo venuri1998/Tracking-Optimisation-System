@@ -10,7 +10,9 @@ A test user can log in as a
   Password: 123456
 
 * A normal user is able to add order, view order and view orders by stations.
-* Besides from normal user functionalities admin user can add new stations to the system.
+* Besides from normal user functionalities, admin user can add new stations to the system.
+
+
 
 
 
