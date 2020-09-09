@@ -1,0 +1,17 @@
+### Login to the System ####
+A test user can log in as a
+
+ normal user with =>
+  User Name : user
+  Password: 123456
+
+ admin user with =>
+  User Name : admin
+  Password: 123456
+
+* A normal user is able to add order, view order and view orders by stations.
+* Besides from normal user functionalities admin user can add new stations to the system.
+
+
+
+

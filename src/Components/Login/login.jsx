@@ -76,15 +76,15 @@ class Login extends React.Component {
                         <h5>Login</h5>
                     </div>
                     <form onSubmit={this.handleSubmit}>
-                        <input type="text" id="login" className="fadeIn second"
+                        <input type="text" id="login" className="fadeIn second inputFields types"
                                value={this.state.userName} onChange={this.handleUserName}
                                style={{marginTop:20,marginBottom:5}} placeholder="User Name"/>
-                        <input type="password" id="password" className="fadeIn third"
+                        <input type="password" id="password" className="fadeIn third inputFields types"
                                style={{marginTop:20}}
                                placeholder="Password"
                                value={this.state.password} onChange={this.handlePassword}
                         />
-                        <input type="submit" className="fadeIn fourth" value="LogIn" style={{marginTop:20,marginBottom:25}}
+                        <input type="submit" className="fadeIn fourth inputButtons" value="LogIn" style={{marginTop:20,marginBottom:25}}
                         />
                     </form>
                     <div id="formFooter">
