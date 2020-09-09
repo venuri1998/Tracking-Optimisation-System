@@ -7,17 +7,18 @@ import Form from "react-bootstrap/Form";
 import * as firebase from 'firebase';
 import './viewStation.css'
 import Col from "react-bootstrap/Col";
-export default  class Station extends Component{
+
+export default class Station extends Component {
 
     constructor(props) {
         super(props);
         this.handleStation = this.handleStation.bind(this);
         this.state = {
-            Orders:[],
-            Stations:[],
-            status:'',
-            station:'',
-            selected_station:''
+            Orders: [],
+            Stations: [],
+            status: '',
+            station: '',
+            selected_station: ''
         }
     }
 
@@ -28,10 +29,10 @@ export default  class Station extends Component{
                 console.log(snap.key);
                 allStations.push(snap.val());
             });
-            this.setState({ Stations: allStations});
-            if(this.state.Stations.length!=0){
+            this.setState({Stations: allStations});
+            if (this.state.Stations.length != 0) {
                 this.setState({
-                    selected_station:allStations[0].stationName
+                    selected_station: allStations[0].stationName
                 })
             }
         })
@@ -41,24 +42,28 @@ export default  class Station extends Component{
                 console.log(snap.key);
                 allOrders.push(snap.val());
             });
-            this.setState({ Orders: allOrders},()=>{this.setStaion()});
+            this.setState({Orders: allOrders}, () => {
+                this.setStaion()
+            });
         })
 
     }
+
     handleStation(event) {
         this.setState({
             selected_station: event.target.value
         })
 
+
     }
 
-    status_update_inprogress=(id)=>{
+    status_update_inprogress = (id) => {
         firebase.database().ref('Order/' + id).update({
-            current_status:'In Progress'
+            current_status: 'In Progress'
         })
     }
 
-    status_update_done=(id,sts)=>{
+    status_update_done = (id, sts) => {
         const index = this.state.Stations.map(e => e.stationName).indexOf(sts);
         console.log("jdjdjdjd" + index + "dgdggd" + this.state.Stations.length)
 
@@ -67,16 +72,16 @@ export default  class Station extends Component{
             current_status:'Pending',
             current_station: this.state.Stations[index+1].stationName
         })*/
-        if(index+1===this.state.Stations.length){
+        if (index + 1 === this.state.Stations.length) {
             firebase.database().ref('Order/' + id).update({
-                current_status:'Done',
+                current_status: 'Done',
                 current_station: sts
             })
 
-        }else{
+        } else {
             firebase.database().ref('Order/' + id).update({
-                current_status:'Pending',
-                current_station: this.state.Stations[index+1].stationName
+                current_status: 'Pending',
+                current_station: this.state.Stations[index + 1].stationName
             })
         }
     }
@@ -84,44 +89,42 @@ export default  class Station extends Component{
     setStaion = () => {
         this.state.Orders.map(e => {
             const index = this.state.Stations.map(l => l.stationName).indexOf(e.current_station);
-            if(index > 0){
+            if (index > 0) {
                 console.log(index)
-                for(let i=0 ; i<index ; i++){
+                for (let i = 0; i < index; i++) {
                     console.log(i)
                     const obj = {
 
-                        createDate:e.createDate,
-                        color:e.color,
+                        createDate: e.createDate,
+                        color: e.color,
                         current_status: 'Done',
-                        current_station:this.state.Stations[i].stationName,
-                        orderId:e.orderId,
-                        style:e.style,
-                        size:e.size
+                        current_station: this.state.Stations[i].stationName,
+                        orderId: e.orderId,
+                        style: e.style,
+                        size: e.size
                     }
                     //var newStateArray = this.state.Orders.slice();
                     //newStateArray.push(obj);
                     //this.setState({Orders: newStateArray});
 
-                   this.state.Orders.push(obj);
+                    this.state.Orders.push(obj);
                     //console.log(this.state.Orders)
-                    this.setState({
-
-                    },()=>{
+                    this.setState({}, () => {
                         this.state.Orders.sort(function (a, b) {
                             return a.current_station - b.current_station;
                         });
                     })
                 }
-            }else if(index===this.state.Stations.length){
+            } else if (index === this.state.Stations.length) {
                 const obj = {
 
-                    createDate:e.createDate,
-                    color:e.color,
+                    createDate: e.createDate,
+                    color: e.color,
                     current_status: 'Done',
-                    current_station:this.Stations[this.Stations.length].stationName,
-                    orderId:e.orderId,
-                    style:e.style,
-                    size:e.size
+                    current_station: this.Stations[this.Stations.length].stationName,
+                    orderId: e.orderId,
+                    style: e.style,
+                    size: e.size
                 }
                 //var newStateArray = this.state.Orders.slice();
                 //newStateArray.push(obj);
@@ -133,15 +136,17 @@ export default  class Station extends Component{
 
     }
 
-    displayData(){
-        let data1=[];
-        this.state.Orders.map(o=>{
-            if(o.current_station==this.state.selected_station){
+    displayData() {
+
+        let data1 = [];
+        this.state.Orders.map(o => {
+            if (o.current_station == this.state.selected_station) {
                 data1.push(o);
             }
         })
         return data1;
     }
+
     render() {
         const columns = [
             {
@@ -150,15 +155,15 @@ export default  class Station extends Component{
                 getProps: (state, rowInfo, column) => {
                     return {
                         style: {
-                            background: rowInfo && rowInfo.row.current_status==='Pending' ? '#ff928b' :  rowInfo && rowInfo.row.current_status==='In Progress'? '#ffe94e' :
-                                rowInfo && rowInfo.row.current_status==='Done'? '#5dd39e' : null
+                            background: rowInfo && rowInfo.row.current_status === 'Pending' ? '#ff928b' : rowInfo && rowInfo.row.current_status === 'In Progress' ? '#ffe94e' :
+                                rowInfo && rowInfo.row.current_status === 'Done' ? '#5dd39e' : null
 
                         },
                     };
                 },
-                style:{
-                    textAlign:"center",
-                    color:"black",
+                style: {
+                    textAlign: "center",
+                    color: "black",
 
                 },
                 width: 200, minwidth: 200, maxwidth: 200
@@ -169,14 +174,14 @@ export default  class Station extends Component{
                 getProps: (state, rowInfo, column) => {
                     return {
                         style: {
-                            background: rowInfo && rowInfo.row.current_status==='Pending' ? '#ff928b' :  rowInfo && rowInfo.row.current_status==='In Progress'? '#ffe94e' :
-                                rowInfo && rowInfo.row.current_status==='Done'? '#5dd39e' : null
+                            background: rowInfo && rowInfo.row.current_status === 'Pending' ? '#ff928b' : rowInfo && rowInfo.row.current_status === 'In Progress' ? '#ffe94e' :
+                                rowInfo && rowInfo.row.current_status === 'Done' ? '#5dd39e' : null
 
                         },
                     };
                 },
-                style:{
-                    textAlign:"center",
+                style: {
+                    textAlign: "center",
 
                 },
                 width: 150, minwidth: 200, maxwidth: 200
@@ -187,14 +192,14 @@ export default  class Station extends Component{
                 getProps: (state, rowInfo, column) => {
                     return {
                         style: {
-                            background: rowInfo && rowInfo.row.current_status==='Pending' ? '#ff928b' :  rowInfo && rowInfo.row.current_status==='In Progress'? '#ffe94e' :
-                                rowInfo && rowInfo.row.current_status==='Done'? '#5dd39e' : null
+                            background: rowInfo && rowInfo.row.current_status === 'Pending' ? '#ff928b' : rowInfo && rowInfo.row.current_status === 'In Progress' ? '#ffe94e' :
+                                rowInfo && rowInfo.row.current_status === 'Done' ? '#5dd39e' : null
 
                         },
                     };
                 },
-                style:{
-                    textAlign:"center",
+                style: {
+                    textAlign: "center",
 
                 },
                 width: 120, minwidth: 200, maxwidth: 200
@@ -205,14 +210,14 @@ export default  class Station extends Component{
                 getProps: (state, rowInfo, column) => {
                     return {
                         style: {
-                            background: rowInfo && rowInfo.row.current_status==='Pending' ? '#ff928b' :  rowInfo && rowInfo.row.current_status==='In Progress'? '#ffe94e' :
-                                rowInfo && rowInfo.row.current_status==='Done'? '#5dd39e' : null
+                            background: rowInfo && rowInfo.row.current_status === 'Pending' ? '#ff928b' : rowInfo && rowInfo.row.current_status === 'In Progress' ? '#ffe94e' :
+                                rowInfo && rowInfo.row.current_status === 'Done' ? '#5dd39e' : null
 
                         },
                     };
                 },
-                style:{
-                    textAlign:"center",
+                style: {
+                    textAlign: "center",
 
                 },
                 width: 120, minwidth: 200, maxwidth: 200
@@ -220,18 +225,18 @@ export default  class Station extends Component{
             {
                 Header: "Size",
                 accessor: "size",
-                filterable:true,
+                filterable: true,
                 getProps: (state, rowInfo, column) => {
                     return {
                         style: {
-                            background: rowInfo && rowInfo.row.current_status==='Pending' ? '#ff928b' :  rowInfo && rowInfo.row.current_status==='In Progress'? '#ffe94e' :
-                                rowInfo && rowInfo.row.current_status==='Done'? '#5dd39e' : null
+                            background: rowInfo && rowInfo.row.current_status === 'Pending' ? '#ff928b' : rowInfo && rowInfo.row.current_status === 'In Progress' ? '#ffe94e' :
+                                rowInfo && rowInfo.row.current_status === 'Done' ? '#5dd39e' : null
 
                         },
                     };
                 },
-                style:{
-                    textAlign:"center",
+                style: {
+                    textAlign: "center",
 
                 },
                 width: 100, minwidth: 200, maxwidth: 200
@@ -241,74 +246,74 @@ export default  class Station extends Component{
                 getProps: (state, rowInfo, column) => {
                     return {
                         style: {
-                            background: rowInfo && rowInfo.row.current_status==='Pending' ? '#ff928b' :  rowInfo && rowInfo.row.current_status==='In Progress'? '#ffe94e' :
-                                rowInfo && rowInfo.row.current_status==='Done'? '#5dd39e' : null
+                            background: rowInfo && rowInfo.row.current_status === 'Pending' ? '#ff928b' : rowInfo && rowInfo.row.current_status === 'In Progress' ? '#ffe94e' :
+                                rowInfo && rowInfo.row.current_status === 'Done' ? '#5dd39e' : null
 
                         },
                     };
                 },
                 accessor: "current_status",
-                style:{
-                    textAlign:"center",
+                style: {
+                    textAlign: "center",
 
                 },
                 width: 100, minwidth: 200, maxwidth: 200
             },
             {
-                Header:"Actions",
+                Header: "Actions",
                 getProps: (state, rowInfo, column) => {
                     return {
                         style: {
-                            background: rowInfo && rowInfo.row.current_status==='Pending' ? '#ff928b' :  rowInfo && rowInfo.row.current_status==='In Progress'? '#ffe94e' :
-                                rowInfo && rowInfo.row.current_status==='Done'? '#5dd39e' : null
+                            background: rowInfo && rowInfo.row.current_status === 'Pending' ? '#ff928b' : rowInfo && rowInfo.row.current_status === 'In Progress' ? '#ffe94e' :
+                                rowInfo && rowInfo.row.current_status === 'Done' ? '#5dd39e' : null
 
                         },
                     };
-                },  style:{
-                    textAlign:"center",
+                }, style: {
+                    textAlign: "center",
 
                 },
-                Cell:props => {
-                    return(
+                Cell: props => {
+                    return (
                         <div>
                             {(() => {
-                               if(props.original.current_status==="Pending"){
-                                   return(
-                                       <Button  size="small"
-                                               onClick={() => this.status_update_inprogress(props.original.orderId)}
-                                               variant="contained"
+                                if (props.original.current_status === "Pending") {
+                                    return (
+                                        <Button size="small"
+                                                onClick={() => this.status_update_inprogress(props.original.orderId)}
+                                                variant="contained"
 
-                                       >To Progess</Button>
-                                   )
-                               }else if(props.original.current_status==="In Progress"){
-                                   return(<Button size="small"
-                                                  onClick={() => this.status_update_done(props.original.orderId,props.original.current_station)}
-                                                  variant="contained"
-                                   >Complete</Button>)
-                               }
+                                        >To Progess</Button>
+                                    )
+                                } else if (props.original.current_status === "In Progress") {
+                                    return (<Button size="small"
+                                                    onClick={() => this.status_update_done(props.original.orderId, props.original.current_station)}
+                                                    variant="contained"
+                                    >Complete</Button>)
+                                }
                             })()}
-
 
 
                         </div>
                     )
-                },width: 200, minwidth: 200, maxwidth: 200,
+                }, width: 200, minwidth: 200, maxwidth: 200,
                 filterable: false
             }
         ]
 
 
-        return(
+        return (
             <div align="center">
-                <Typography component="h1" variant="h4" align="center" style={{marginTop:30,marginBottom:30}}>
+                <Typography component="h1" variant="h4" align="center" style={{marginTop: 30, marginBottom: 30}}>
                     List of Station Orders
                 </Typography>
-                <div className="card" style={{width: "90%", marginTop: 30,marginBottom:30}}>
+                <div className="card" style={{width: "90%", marginTop: 30, marginBottom: 30}}>
                     <div className="card-body" align="center">
                         <div style={{marginTop: 10}}>
                             <Col sm={6}>
                                 <Form>
-                                    <Form.Control as="select" style={{ marginLeft: '30px', marginRight: '30px' }} onChange={this.handleStation}>
+                                    <Form.Control as="select" style={{marginLeft: '30px', marginRight: '30px'}}
+                                                  onChange={this.handleStation}>
                                         <option>Select Station to View Orders</option>
                                         {this.state.Stations.map(name => (
                                             <option
@@ -320,7 +325,8 @@ export default  class Station extends Component{
                                         ))}
                                     </Form.Control>
                                 </Form>
-                                <h3 align="center" style={{marginBottom: 20,marginTop:20}}>{this.state.selected_station}</h3>
+                                <h3 align="center"
+                                    style={{marginBottom: 20, marginTop: 20}}>{this.state.selected_station}</h3>
                             </Col>
 
                             <ReactTable
@@ -335,7 +341,7 @@ export default  class Station extends Component{
                                 ]}
                                 defaultFilterMethod={this.filterCaseInsensitive}
                                 defaultPageSize={5}
-                                style={{marginBottom:20}}
+                                style={{marginBottom: 20}}
                                 className="-striped -highlight"
                                 noDataText={"Please Wait......"}>
                             </ReactTable>

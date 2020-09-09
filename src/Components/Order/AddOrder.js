@@ -10,31 +10,28 @@ import {Alert} from "react-bootstrap";
 import Button from "@material-ui/core/Button/Button";
 
 
-
-
-
 export default class AddOrder extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             orderId: '',
             createDate: '',
-            cdate:'',
+            cdate: '',
             color: '',
             style: '',
             size: '',
-            Stations:[],
-            getOrders:[],
-            current_status:'Pending',
-            current_station:'',
-            show:false,
-            showSuccess:false,
-            idError:'',
-            emptyError:'',
-            dateError:'',
-            colorError:'',
-            styleError:'',
-            sizeError:''
+            Stations: [],
+            getOrders: [],
+            current_status: 'Pending',
+            current_station: '',
+            show: false,
+            showSuccess: false,
+            idError: '',
+            emptyError: '',
+            dateError: '',
+            colorError: '',
+            styleError: '',
+            sizeError: ''
 
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -53,7 +50,7 @@ export default class AddOrder extends React.Component {
                 console.log(snap.key);
                 allOrders.push(snap.val());
             });
-            this.setState({ getOrders: allOrders});
+            this.setState({getOrders: allOrders});
         })
 
         firebase.database().ref().child('Station').orderByChild('step').on('value', snapshot => {
@@ -62,14 +59,14 @@ export default class AddOrder extends React.Component {
                 console.log(snap.key);
                 allStations.push(snap.val());
             });
-            this.setState({ Stations: allStations});
-            if(this.state.Stations.length!=0){
+            this.setState({Stations: allStations});
+            if (this.state.Stations.length != 0) {
                 this.setState({
-                    current_station:this.state.Stations[0].stationName
+                    current_station: this.state.Stations[0].stationName
                 })
-            }else{
+            } else {
                 this.setState({
-                    show:true
+                    show: true
                 })
             }
         })
@@ -84,7 +81,7 @@ export default class AddOrder extends React.Component {
 
     }
 
-    handleCreateDate(event,datee) {
+    handleCreateDate(event, datee) {
         this.setState({
             createDate: datee
         })
@@ -109,58 +106,58 @@ export default class AddOrder extends React.Component {
         })
     }
 
-    isValid=()=>{
-        let idError='';
-        let dateError='';
-        let colorError='';
-        let styleError='';
-        let sizeError='';
-        let emptyError='';
+    isValid = () => {
+        let idError = '';
+        let dateError = '';
+        let colorError = '';
+        let styleError = '';
+        let sizeError = '';
+        let emptyError = '';
 
-        if(this.state.getOrders.length!=0) {
+        if (this.state.getOrders.length != 0) {
             for (let j = 0; j < this.state.getOrders.length; j++) {
                 if ((this.state.orderId === this.state.getOrders[j].orderId) || !this.state.orderId) {
                     idError = "Invalid Order Id"
                 }
             }
-        }else{
-            if ( !this.state.orderId) {
+        } else {
+            if (!this.state.orderId) {
                 emptyError = "Invalid Order Id"
             }
         }
-        if(!this.state.color){
+        if (!this.state.color) {
             colorError = "Color cannot be empty"
         }
-        if(!this.state.style){
+        if (!this.state.style) {
             styleError = "Style cannot be empty"
         }
-        if(!this.state.size){
+        if (!this.state.size) {
             sizeError = "Size cannot be empty"
         }
-        if( !this.state.createDate){
+        if (!this.state.createDate) {
             dateError = "Invalid date"
         }
-        if(idError || dateError || colorError || sizeError||styleError|| emptyError ){
+        if (idError || dateError || colorError || sizeError || styleError || emptyError) {
             this.setState({
-                idError, dateError, colorError,  sizeError ,styleError,emptyError
+                idError, dateError, colorError, sizeError, styleError, emptyError
             })
             return false;
         }
         this.setState({
-            idError:'',
-            dateError:'',
-            colorError:'',
-            sizeError:'' ,
-            styleError:'',
-            emptyError:''
+            idError: '',
+            dateError: '',
+            colorError: '',
+            sizeError: '',
+            styleError: '',
+            emptyError: ''
         })
-        return  true;
+        return true;
     }
 
     handleSubmit(e) {
         e.preventDefault()
         const validate = this.isValid();
-        if(validate===true) {
+        if (validate === true) {
             if (this.state.Stations.length != 0) {
                 firebase.database().ref('Order/' + this.state.orderId).set({
                     orderId: this.state.orderId,
@@ -177,7 +174,7 @@ export default class AddOrder extends React.Component {
                         color: '',
                         size: '',
                         style: '',
-                        showSuccess:true
+                        showSuccess: true
                     })
                 })
             } else {
@@ -195,7 +192,10 @@ export default class AddOrder extends React.Component {
 
                 <div class="card" style={{width: "50rem", marginTop: 30}}>
                     <div class="card-body" align="center">
-                        <Alert show={this.state.show} variant="danger"  onClose={() => this.setState({show:false},()=>{window.location.reload()})} dismissible>
+                        <Alert show={this.state.show} variant="danger"
+                               onClose={() => this.setState({show: false}, () => {
+                                   window.location.reload()
+                               })} dismissible>
                             <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
                             <p>
                                 Stations are empty.
@@ -203,9 +203,12 @@ export default class AddOrder extends React.Component {
                                 If Added dismissed this warning.
                             </p>
                         </Alert>
-                        <Alert show={this.state.showSuccess} variant="success"  onClose={() => this.setState({showSuccess:false},()=>{window.location.reload()})} dismissible>
+                        <Alert show={this.state.showSuccess} variant="success"
+                               onClose={() => this.setState({showSuccess: false}, () => {
+                                   window.location.reload()
+                               })} dismissible>
                             <p>
-                             Order is Successfully Added !
+                                Order is Successfully Added !
                             </p>
                         </Alert>
                         <div style={{marginTop: 30}}>
@@ -222,10 +225,10 @@ export default class AddOrder extends React.Component {
                                                 fullWidth
                                             />
                                         </Col>
-                                        <div  style={{ fontSize: 16, color: "red" ,marginLeft:'50px'}}>
+                                        <div style={{fontSize: 16, color: "red", marginLeft: '50px'}}>
                                             {this.state.idError}
                                         </div>
-                                        <div  style={{ fontSize: 16, color: "red" ,marginLeft:'50px'}}>
+                                        <div style={{fontSize: 16, color: "red", marginLeft: '50px'}}>
                                             {this.state.emptyError}
                                         </div>
                                     </Form.Group>
@@ -239,7 +242,7 @@ export default class AddOrder extends React.Component {
                                                     format="MM/dd/yyyy"
                                                     margin="normal"
                                                     default="hghg"
-                                                    KeyboardButtonProps = {{
+                                                    KeyboardButtonProps={{
                                                         'aria-label': 'change date',
                                                     }}
                                                     onChange={this.handleCreateDate}
@@ -250,7 +253,7 @@ export default class AddOrder extends React.Component {
                                         </Col>
                                     </Form.Group>
                                     <Form.Group>
-                                        <Col sm="12" >
+                                        <Col sm="12">
                                             <Select
                                                 native
                                                 value={this.state.color}
@@ -264,12 +267,12 @@ export default class AddOrder extends React.Component {
                                                 <option value="Blue">Blue</option>
                                             </Select>
                                         </Col>
-                                        <div  style={{ fontSize: 16, color: "red" ,marginLeft:'50px'}}>
+                                        <div style={{fontSize: 16, color: "red", marginLeft: '50px'}}>
                                             {this.state.colorError}
                                         </div>
                                     </Form.Group>
                                     <Form.Group>
-                                        <Col sm="12" style={{marginTop:40}}>
+                                        <Col sm="12" style={{marginTop: 40}}>
                                             <Select
                                                 native
                                                 value={this.state.style}
@@ -282,12 +285,12 @@ export default class AddOrder extends React.Component {
                                                 <option value="C">C</option>
                                             </Select>
                                         </Col>
-                                        <div  style={{ fontSize: 16, color: "red" ,marginLeft:'50px'}}>
+                                        <div style={{fontSize: 16, color: "red", marginLeft: '50px'}}>
                                             {this.state.styleError}
                                         </div>
                                     </Form.Group>
                                     <Form.Group>
-                                        <Col sm="12" style={{marginTop:40}}>
+                                        <Col sm="12" style={{marginTop: 40}}>
                                             <Select
                                                 native
                                                 value={this.state.size}
@@ -300,14 +303,14 @@ export default class AddOrder extends React.Component {
                                                 <option value="L">L</option>
                                             </Select>
                                         </Col>
-                                        <div  style={{ fontSize: 16, color: "red" ,marginLeft:'50px'}}>
+                                        <div style={{fontSize: 16, color: "red", marginLeft: '50px'}}>
                                             {this.state.sizeError}
                                         </div>
                                     </Form.Group>
                                     <Form.Group>
-                                        <Col sm="12" style={{marginTop:40}} >
+                                        <Col sm="12" style={{marginTop: 40}}>
                                             <Button variant="contained" color="primary"
-                                            onClick={this.handleSubmit}
+                                                    onClick={this.handleSubmit}
                                             >
                                                 Add Order
                                             </Button>

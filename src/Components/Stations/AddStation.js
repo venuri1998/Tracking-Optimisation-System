@@ -13,12 +13,11 @@ export default class AddStation extends React.Component {
         super(props);
         this.state = {
             stationName: '',
-            Stations:[],
-            show:false
+            Stations: [],
+            show: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleName = this.handleName.bind(this);
-
 
 
     }
@@ -30,11 +29,10 @@ export default class AddStation extends React.Component {
                 console.log(snap.key);
                 allStations.push(snap.val());
             });
-            this.setState({ Stations: allStations});
+            this.setState({Stations: allStations});
         })
 
     }
-
 
 
     handleName(event) {
@@ -48,28 +46,27 @@ export default class AddStation extends React.Component {
         e.preventDefault()
 
         firebase.database().ref('Station/' + this.state.stationName).set({
-            stationName:this.state.stationName,
-            step: this.state.Stations.length+1
+            stationName: this.state.stationName,
+            step: this.state.Stations.length + 1
         }, () => {
             this.setState({
-               stationName:'',
+                stationName: '',
                 step: ''
             })
-        }).then(this.setState({show:false}))
-
-
+        }).then(this.setState({show: false}))
 
 
     }
-
 
 
     render() {
         return (
             <div align="center">
                 <Modal show={this.state.show} aria-labelledby="contained-modal-title-vcenter" size="md">
-                    <Modal.Header closeButton onClick={()=>{this.setState({show:false})}}>
-                        <Modal.Title style={{color:"grey", fontWeight: 'bold'}}>
+                    <Modal.Header closeButton onClick={() => {
+                        this.setState({show: false})
+                    }}>
+                        <Modal.Title style={{color: "grey", fontWeight: 'bold'}}>
                             Add Station
                         </Modal.Title>
                     </Modal.Header>
@@ -88,9 +85,11 @@ export default class AddStation extends React.Component {
                             </Form.Group>
                             <Modal.Footer>
                                 <Form.Group>
-                                    <Col sm="12" style={{marginTop:40}} >
-                                        <Button variant="secondary" onClick={()=>{this.setState({show:false})}}>Close</Button>
-                                        <Button  className="btn btn-info" style={{marginLeft:15}}
+                                    <Col sm="12" style={{marginTop: 40}}>
+                                        <Button variant="secondary" onClick={() => {
+                                            this.setState({show: false})
+                                        }}>Close</Button>
+                                        <Button className="btn btn-info" style={{marginLeft: 15}}
                                                 onClick={this.handleSubmit}
                                         >
                                             Add
@@ -110,9 +109,13 @@ export default class AddStation extends React.Component {
                             <Col sm={9}>
                                 <h3 align="center" style={{marginBottom: 30}}>Station Details</h3>
                                 <div align="left">
-                                <Button className="btn btn-info btn-md" style={{paddingLeft:15,paddingRight:15,marginBottom:30}} onClick={()=>{this.setState({show:true})}}>Add Station</Button>
+                                    <Button className="btn btn-info btn-md"
+                                            style={{paddingLeft: 15, paddingRight: 15, marginBottom: 30}}
+                                            onClick={() => {
+                                                this.setState({show: true})
+                                            }}>Add Station</Button>
                                 </div>
-                                <Table striped bordered hover size="md" >
+                                <Table striped bordered hover size="md">
                                     <thead>
                                     <tr>
                                         <th>#Step No.</th>
@@ -121,7 +124,7 @@ export default class AddStation extends React.Component {
                                     </thead>
                                     <tbody>
                                     {
-                                        this.state.Stations.map(s =>{
+                                        this.state.Stations.map(s => {
                                             return <tr>
                                                 <td>{s.step}</td>
                                                 <td>{s.stationName}</td>

@@ -1,16 +1,16 @@
 import React, {Component} from "react";
 import ReactTable from "react-table-6";
 import "react-table-6/react-table.css";
-import Button from "@material-ui/core/Button";
 import './vieworder.css'
 import Typography from "@material-ui/core/Typography";
 import * as firebase from 'firebase'
-export default  class ViewOrder extends Component{
+
+export default class ViewOrder extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            Orders:[]
+            Orders: []
         }
     }
 
@@ -21,7 +21,7 @@ export default  class ViewOrder extends Component{
                 console.log(snap.key);
                 allOrders.push(snap.val());
             });
-            this.setState({ Orders: allOrders});
+            this.setState({Orders: allOrders});
         })
 
     }
@@ -32,61 +32,61 @@ export default  class ViewOrder extends Component{
             {
                 Header: "Ordre Id",
                 accessor: "orderId",
-                style:{
-                    textAlign:"center",
-                    color:"black"
+                style: {
+                    textAlign: "center",
+                    color: "black"
                 },
                 width: 200, minwidth: 200, maxwidth: 200
             },
             {
                 Header: "Created Date",
                 accessor: "createDate",
-                style:{
-                    textAlign:"center"
+                style: {
+                    textAlign: "center"
                 },
                 width: 150, minwidth: 200, maxwidth: 200
             },
             {
                 Header: "Color",
                 accessor: "color",
-                style:{
-                    textAlign:"center"
+                style: {
+                    textAlign: "center"
                 },
                 width: 120, minwidth: 200, maxwidth: 200
             },
             {
                 Header: "Style",
                 accessor: "style",
-                style:{
-                    textAlign:"center"
+                style: {
+                    textAlign: "center"
                 },
                 width: 120, minwidth: 200, maxwidth: 200
             },
             {
                 Header: "Size",
                 accessor: "size",
-                style:{
-                    textAlign:"center"
+                style: {
+                    textAlign: "center"
                 },
                 width: 100, minwidth: 200, maxwidth: 200
             }
         ]
 
-        return(
+        return (
             <div>
-                <Typography component="h1" variant="h4" align="center" style={{marginTop:30,marginBottom:30}}>
+                <Typography component="h1" variant="h4" align="center" style={{marginTop: 30, marginBottom: 30}}>
                     List of Orders
                 </Typography>
                 <div align="center">
-                <ReactTable
-                    columns={columns}
-                    data={this.state.Orders}
-                    filterable
-                    defaultFilterMethod={this.filterCaseInsensitive}
-                    defaultPageSize={5}
-                    className="-striped -highlight -order"
-                    noDataText={"Please Wait......"}>
-                </ReactTable>
+                    <ReactTable
+                        columns={columns}
+                        data={this.state.Orders}
+                        filterable
+                        defaultFilterMethod={this.filterCaseInsensitive}
+                        defaultPageSize={5}
+                        className="-striped -highlight -order"
+                        noDataText={"Please Wait......"}>
+                    </ReactTable>
                 </div>
             </div>
         )
