@@ -1,37 +1,62 @@
-import React from 'react';
-import './App.css';
-import {BrowserRouter, Link, Route} from "react-router-dom";
-import AddOrder from "./Components/Order/AddOrder";
-import ViewOrder from './Components/Order/ViewOrder'
-import Station from "./Components/Stations/Station";
-import AddStation from "./Components/Stations/AddStation";
-import Appbar from "./Components/NavBar/Appbar";
-import Login from "./Components/Login/login";
+import React, { Component } from 'react';
 
+class AddOrder extends Component {
+  constructor() {
+    super();
+    this.state = {
+      order: {
+        productName: '',
+        quantity: 0,
+      },
+    };
+  }
 
-class App extends React.Component {
+  handleInputChange = (e) => {
+    const { name, value } = e.target;
+    this.setState((prevState) => ({
+      order: {
+        ...prevState.order,
+        [name]: value,
+      },
+    }));
+  };
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission here, e.g., send data to the server
+    console.log('Submitted data:', this.state.order);
+  };
 
-    render() {
-        return (
-            <div className="App">
+  render() {
+    const { order } = this.state;
 
-                <BrowserRouter>
-                    <Appbar/>
-                    <Route path="/add-order" exact component={AddOrder}/>
-                    <Route path="/add-station" exact component={AddStation}/>
-                    <Route path="/view-order" exact component={ViewOrder}/>
-                    <Route path="/view-station" exact component={Station}/>
-                    <Route path="/login" exact component={Login}/>
-                    <Route path="/" exact component={Login}/>
-
-
-                </BrowserRouter>
-            </div>
-
-        );
-    }
+    return (
+      <div>
+        <h2>Add New Order</h2>
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <label>Product Name:</label>
+            <input
+              type="text"
+              name="productName"
+              value={order.productName}
+              onChange={this.handleInputChange}
+            />
+          </div>
+          <div>
+            <label>Quantity:</label>
+            <input
+              type="number"
+              name="quantity"
+              value={order.quantity}
+              onChange={this.handleInputChange}
+            />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    );
+  }
 }
 
-export default App;
-
+export default AddOrder;
