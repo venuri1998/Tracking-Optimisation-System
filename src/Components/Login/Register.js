@@ -32,7 +32,8 @@ export default class Register extends React.Component {
                     <Form.Group>
 
                             <Button  className="btn btn-info" style={{marginLeft:15}} onClick={this.handleSubmit}>Register</Button>
-
+            <h1>Onna babo athinniy</h1>
+            <p>Menna mehe waren bn</p>
                     </Form.Group>
                 </Form>
             </div>

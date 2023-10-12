@@ -74,6 +74,37 @@ export default class AddOrder extends React.Component {
 
     }
 
+    componentDidMount222323() {
+        firebase.database().ref().child('Order').on('value', snapshot => {
+            let allOrders = [];
+            snapshot.forEach(snap => {
+                console.log(snap.key);
+                allOrders.push(snap.val());
+            });
+            this.setState({getOrders: allOrders});
+        })
+
+        firebase.database().ref().child('Station').orderByChild('step').on('value', snapshot => {
+            let allStations = [];
+            snapshot.forEach(snap => {
+                console.log(snap.key);
+                allStations.push(snap.val());
+            });
+            this.setState({Stations: allStations});
+            if (this.state.Stations.length != 0) {
+                this.setState({
+                    current_station: this.state.Stations[0].stationName
+                })
+            } else {
+                this.setState({
+                    show: true
+                })
+            }
+        })
+
+
+    }
+
     handleOrderId(event) {
         this.setState({
             orderId: event.target.value

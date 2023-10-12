@@ -35,13 +35,13 @@ export default class Appbar extends Component {
                             return <Nav className="mr-auto"> <Nav.Link as={NavLink} to={"/add-order"}>Add
                                 Order</Nav.Link>
 
-                                <Nav.Link as={NavLink} to={"/view-order"}>View Orders</Nav.Link>
-                                <Nav.Link as={NavLink} to={"/view-station"}>View Stations</Nav.Link></Nav>
+                                <Nav.Link as={NavLink} to={"/view-order"}>View Orders Hello </Nav.Link>
+                                <Nav.Link as={NavLink} to={"/view-station"}>View Stations New</Nav.Link></Nav>
                         }
                     })()}
                     {(() => {
                         if (this.state.uname == 'admin') {
-                            return <Nav.Link as={NavLink} to={"/add-station"}>Add Station</Nav.Link>
+                            return <Nav.Link as={NavLink} to={"/add-station"}>Add Station New</Nav.Link>
                         }
                     })()}
                 </Nav>
